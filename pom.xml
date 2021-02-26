@@ -11,6 +11,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>${env.SONAR_API_KEY}</sonar.login>
+    <sonar.organization>wmftest</sonar.organization>
   </properties>
 
   <dependencies>
@@ -77,6 +80,15 @@
     <!-- where the source files are -->
     <testSourceDirectory>tests</testSourceDirectory>
     <!-- where the test source files are -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.8.0.2131</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
