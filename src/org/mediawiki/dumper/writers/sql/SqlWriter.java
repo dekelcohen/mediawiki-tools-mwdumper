@@ -26,6 +26,7 @@
 package org.mediawiki.dumper.writers.sql;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -43,6 +44,8 @@ import org.mediawiki.dumper.writers.DumpWriter;
 
 
 public abstract class SqlWriter implements DumpWriter {
+    public static final Charset ENCODING = Charset.forName("UTF-8");
+
 	public static abstract class Traits {
 		public abstract SqlLiteral getCurrentTime();
 		public abstract SqlLiteral getRandom();
@@ -334,8 +337,9 @@ public abstract class SqlWriter implements DumpWriter {
 
 	protected static String commentFormat(String comment) {
 		if (comment == null || comment.length() == 0) return "";
-		if (comment.endsWith("\uFFFD")) {  // replacement character
-			comment = comment.substring(0, comment.length() - 1);
+		//truncate comment to 255 Bytes - a tinyblob
+		while( comment.getBytes(ENCODING).length > 255 ) {
+			comment = comment.substring(0, comment.length() - 1 );
 		}
 		return comment;
 	}
